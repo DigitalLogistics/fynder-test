@@ -2,7 +2,7 @@
 {-# LANGUAGE FlexibleContexts #-}
 {-# OPTIONS_GHC -fno-warn-unused-do-bind #-}
 
-module Fynder.Test.Data
+module Fynder.Test.Fixture
   ( loadFixture1
   , Fixture1(..)
   ) where

@@ -14,7 +14,7 @@ library
   default-language:    Haskell2010
   ghc-options: -Wall
   exposed-modules:
-      Fynder.Test.Data
+      Fynder.Test.Fixture
       Fynder.Test.QuickCheck
   build-depends:
       base (>=4.6 && <4.7)
