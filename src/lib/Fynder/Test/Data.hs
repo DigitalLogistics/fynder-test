@@ -2,24 +2,14 @@
 {-# LANGUAGE FlexibleContexts #-}
 {-# OPTIONS_GHC -fno-warn-unused-do-bind #-}
 
-module Main (main) where
+module Fynder.Test.Data
+  ( loadFixture1
+  , Fixture1(..)
+  ) where
 
-import           Control.Applicative              ((<$>), (<*>))
-import qualified Control.Exception                           as Ex
 import           Control.Monad.Free               (MonadFree)
 import           Control.Lens
-import qualified Data.Configurator                           as C
-import           Data.List                        (zip4)
-import           Data.Monoid
-import           Data.Time                        (parseTime)
-import qualified Data.Text                                   as T
-import qualified Database.PostgreSQL.Simple                  as PG
-import qualified Options.Applicative                         as OA
-import           System.Locale                    (defaultTimeLocale)
 
-import qualified Fynder.Command                              as FC
-mport           Fynder.Conf                      (fynderConfFromConfigurator)
-import           Fynder.Db.Read
 import           Fynder.Types
 import qualified Fynder.Types.Model.UserProfileBusinessStaff as UserProfileBusinessStaff
 import qualified Fynder.Types.Model.ClassType                as ClassType
@@ -30,8 +20,54 @@ import qualified Fynder.Types.Model.Business                 as Business
 
 --------------------------------------------------------------------------------
 
-sampleData :: MonadFree CommandF m => m ()
-sampleData = do
+data Fixture1 = Fixture1
+  { f1uBen                   :: !UserId
+  , f1uBrian                 :: !UserId
+  , f1uMer                   :: !UserId
+  , f1uKris                  :: !UserId
+  , f1uEsther                :: !UserId
+  , f1uMatt                  :: !UserId
+  , f1uWill                  :: !UserId
+
+  , f1bGym                   :: !BusinessId
+
+  , f1ubsGymEsther           :: !UserProfileBusinessStaffId
+  , f1ubsGymMatt             :: !UserProfileBusinessStaffId
+  , f1ubsGymWill             :: !UserProfileBusinessStaffId
+  , f1ubsGymBen              :: !UserProfileBusinessStaffId
+  , f1ubsGymBrian            :: !UserProfileBusinessStaffId
+  , f1ubsGymMer              :: !UserProfileBusinessStaffId
+  , f1ubsGymKris             :: !UserProfileBusinessStaffId
+
+  , f1cpGymEsther            :: !CustomerProfileId
+  , f1cpGymMatt              :: !CustomerProfileId
+  , f1cpGymWill              :: !CustomerProfileId
+  , f1cpGymBen               :: !CustomerProfileId
+  , f1cpGymBrian             :: !CustomerProfileId
+  , f1cpGymMer               :: !CustomerProfileId
+  , f1cpGymKris              :: !CustomerProfileId
+
+  , f1apGymEsther            :: !AdminProfileId
+  , f1apGymBrian             :: !AdminProfileId
+  , f1apGymBen               :: !AdminProfileId
+  , f1apGymMer               :: !AdminProfileId
+  , f1apGymKris              :: !AdminProfileId
+
+  , f1tpGymMatt              :: !TrainerProfileId
+  , f1tpGymEsther            :: !TrainerProfileId
+
+  , f1studioGymWest          :: !StudioId
+  , f1studioGymEast          :: !StudioId
+
+  , f1ctGymTRX               :: !ClassTypeId
+  , f1ctGymPilates           :: !ClassTypeId
+  , f1ctGymTRXEstherWest     :: !ClassTemplateId
+  , f1ctGymPilatesEstherWest :: !ClassTemplateId
+  } deriving (Show, Read, Eq, Ord)
+
+
+loadFixture1 :: MonadFree CommandF m => m Fixture1
+loadFixture1 = do
     let fynderHQAddress = "77 Leonard St., London, EC2A 4QS, UK" ^?! texty
         fynderHQPhone = "12" ^?! texty
         tzLondon = "Europe/London" ^?! texty ^. _Unwrapped
@@ -270,4 +306,47 @@ sampleData = do
        , ClassTemplate._trainerId   = tpGymEsther
        }
 
-    return ()
+    return $ Fixture1
+       { f1uBen                   = uBen
+       , f1uBrian                 = uBrian
+       , f1uMer                   = uMer
+       , f1uKris                  = uKris
+       , f1uEsther                = uEsther
+       , f1uMatt                  = uMatt
+       , f1uWill                  = uWill
+
+       , f1bGym                   = bGym
+
+       , f1ubsGymEsther           = ubsGymEsther
+       , f1ubsGymMatt             = ubsGymMatt
+       , f1ubsGymWill             = ubsGymWill
+       , f1ubsGymBen              = ubsGymBen
+       , f1ubsGymBrian            = ubsGymBrian
+       , f1ubsGymMer              = ubsGymMer
+       , f1ubsGymKris             = ubsGymKris
+
+       , f1cpGymEsther            = cpGymEsther
+       , f1cpGymMatt              = cpGymMatt
+       , f1cpGymWill              = cpGymWill
+       , f1cpGymBen               = cpGymBen
+       , f1cpGymBrian             = cpGymBrian
+       , f1cpGymMer               = cpGymMer
+       , f1cpGymKris              = cpGymKris
+
+       , f1apGymEsther            = apGymEsther
+       , f1apGymBrian             = apGymBrian
+       , f1apGymBen               = apGymBen
+       , f1apGymMer               = apGymMer
+       , f1apGymKris              = apGymKris
+
+       , f1tpGymMatt              = tpGymMatt
+       , f1tpGymEsther            = tpGymEsther
+
+       , f1studioGymWest          = studioGymWest
+       , f1studioGymEast          = studioGymEast
+
+       , f1ctGymTRX               = ctGymTRX
+       , f1ctGymPilates           = ctGymPilates
+       , f1ctGymTRXEstherWest     = ctGymTRXEstherWest
+       , f1ctGymPilatesEstherWest = ctGymPilatesEstherWest
+       }
